@@ -19,7 +19,7 @@
 Summary: Kerberos authentication module for HTTP
 Name: %{?scl:%scl_prefix}mod_auth_kerb
 Version: 5.4
-Release: 30%{?dist}
+Release: 33%{?dist}
 # src/mod_auth_kerb.c is under 3-clause BSD, ASL 2.0 code is patched in (-s4u2proxy.patch)
 # src/mit-internals.h contains MIT-licensed code.
 License: BSD and MIT and ASL 2.0
@@ -87,7 +87,7 @@ install -Dm 755 src/.libs/mod_auth_kerb.so \
         $RPM_BUILD_ROOT%{_httpd_moddir}/mod_auth_kerb.so
 %endif
 
-%if 0%{?fedora} >= 18 || 0%{?rhel} >= 7
+%if 0%{?fedora} >= 18 || 0%{?rhel} >= 7 || 0%{?scl:1}
 # httpd >= 2.4.x
 sed -n /^LoadModule/p %{SOURCE1} > 10-auth_kerb.conf
 sed '/LoadModule/d;/Location /,/Location>/s,^#,,' %{SOURCE1} > example.conf
@@ -134,6 +134,9 @@ cp -p %{SOURCE2} .
 %attr(0700,apache,apache) %dir %{_localstatedir}/run/httpd/krbcache
 
 %changelog
+* Wed May 24 2017 Luboš Uhliarik <luhliari@redhat.com> - 5.4-33
+- rebuild
+
 * Wed Jan 28 2015 Jan Kaluza <jkaluza@redhat.com> - 5.4-30
 - rebuild for rhscl-2.0
 
